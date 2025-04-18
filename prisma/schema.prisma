@@ -1,0 +1,171 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Define the database connection
+datasource db {
+  provider = "postgresql" // Example: Use PostgreSQL. Change as needed (mysql, sqlite, etc.)
+  url      = env("DATABASE_URL")
+}
+
+// Define the Prisma Client generator
+generator client {
+  provider = "prisma-client-js"
+}
+
+// --- Models ---
+
+// Represents a chat user
+model User {
+  id       String  @id @default(uuid()) @db.Uuid // Primary Key as UUID
+  name     String  @unique // The clientName, assumed to be unique
+  email    String  @unique // The user's email, assumed to be unique
+  image    String? // Optional URL to the user's profile image
+  password String // The password, hashed
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // --- Relationships ---
+
+  // Messages sent by this user
+  sentMessages Message[] @relation("SentMessages")
+
+  // Private messages received by this user
+  receivedPrivateMessages Message[] @relation("ReceivedPrivateMessages")
+
+  // Groups this user is a member of (Many-to-Many)
+  groups Group[]
+
+  // Groups created by this user
+  createdGroups Group[] @relation("CreatedGroups")
+
+  // Reactions made by this user
+  reactions Reaction[]
+
+    // Private conversations initiated by this user
+  initiatedPrivateChats PrivateChat[] @relation("Initiator")
+
+  // Private conversations this user is a recipient of
+  receivedPrivateChats PrivateChat[] @relation("Recipient")
+}
+
+// Represents a chat group
+model Group {
+  id   String @id @default(uuid()) @db.Uuid // Primary Key as UUID
+  name String @unique // The group name
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // --- Relationships ---
+
+  // The user who created the group
+  creator   User   @relation("CreatedGroups", fields: [creatorId], references: [id])
+  creatorId String @db.Uuid // Foreign key to User
+
+  // Last message sent in this group
+  lastMessage Message? @relation("GroupLastMessage", fields: [lastMessageId], references: [id])
+  lastMessageId String? @db.Uuid @unique // Foreign key to Message (nullable)
+
+  // Users who are members of this group (Many-to-Many)
+  members User[]
+
+  // Messages sent to this group
+  messages Message[] @relation("GroupMessages")
+}
+
+// Represents a single chat message
+model Message {
+  id String @id @default(uuid()) @db.Uuid // Primary Key as UUID (matches client-side ID)
+
+  content   String
+  timestamp DateTime @default(now())
+  edited    Boolean  @default(false) // Flag if the message was edited
+  imageUrl  String? // Optional image URL
+
+  // Timestamps (for database record)
+  dbCreatedAt DateTime @default(now())
+  dbUpdatedAt DateTime @updatedAt
+
+  // --- Relationships ---
+
+  // The user who sent the message
+  sender   User   @relation("SentMessages", fields: [senderId], references: [id])
+  senderId String @db.Uuid // Foreign key to User
+
+  // Optional: The specific user this message was sent to (for private messages)
+  recipientUser   User?   @relation("ReceivedPrivateMessages", fields: [recipientUserId], references: [id])
+  recipientUserId String? @db.Uuid // Foreign key to User (nullable)
+
+  // Optional: The group this message was sent to (for group messages)
+  recipientGroup   Group?  @relation("GroupMessages", fields: [recipientGroupId], references: [id])
+  recipientGroupId String? @db.Uuid // Foreign key to Group (nullable)
+
+  // Reactions to this message
+  reactions Reaction[]
+
+  // The last message in a group (for quick access)
+  lastMessageGroups Group[] @relation("GroupLastMessage")
+
+  // The private chat this message belongs to (if it's a private message)
+  PrivateChatLastMessage PrivateChat[] @relation("PrivateChatLastMessage")
+
+
+  // --- Indices ---
+  @@index([senderId])
+  @@index([recipientUserId])
+  @@index([recipientGroupId])
+  @@index([timestamp]) // Index timestamp for sorting/filtering
+}
+
+// Represents a reaction to a message
+model Reaction {
+  emoji String // The reaction emoji (e.g., "👍", "❤️")
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // --- Relationships ---
+
+  // The user who added the reaction
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade) // Cascade delete if user is deleted
+  userId String @db.Uuid // Foreign key to User
+
+  // The message this reaction is for
+  message   Message @relation(fields: [messageId], references: [id], onDelete: Cascade) // Cascade delete if message is deleted
+  messageId String  @db.Uuid // Foreign key to Message
+
+  // --- Constraints & Indices ---
+  // Ensure a user can only add the same reaction once per message
+  @@unique([userId, messageId, emoji])
+  @@index([messageId])
+  @@index([userId])
+
+  @@id([userId, messageId]) // Composite primary key
+}
+
+model PrivateChat {
+
+  // The user who initiated the private chat
+  initiator     User     @relation("Initiator", fields: [initiatorId], references: [id])
+  initiatorId   String   @db.Uuid 
+
+  // The user who is the recipient of the private chat
+  recipient     User     @relation("Recipient", fields: [recipientId], references: [id])
+  recipientId   String   @db.Uuid 
+
+  // Last message sent in this private chat
+  lastMessage   Message? @relation("PrivateChatLastMessage", fields: [lastMessageId], references: [id])
+  lastMessageId String?  @db.Uuid @unique
+
+
+  // --- Constraints ---
+  // Ensure a private chat can only exist between a specific pair of users once
+  @@id([initiatorId, recipientId])
+  @@unique([initiatorId, recipientId])
+  @@index([initiatorId])
+  @@index([recipientId])
+}
