@@ -1,69 +1,69 @@
 {
-  "compilerOptions": {
-    /* Visit https://aka.ms/tsconfig to read more about this file */
+    "compilerOptions": {
+        /* Visit https://aka.ms/tsconfig to read more about this file */
 
-    /* Projects */
-    "composite": false,                     /* Disable project references. */
-    "disableSolutionSearching": false,      /* Do not disable searching for projects in the solution. */
-    "incremental": true,                    /* Enable incremental compilation for faster builds. */
+        /* Projects */
+        "composite": false /* Disable project references. */,
+        "disableSolutionSearching": false /* Do not disable searching for projects in the solution. */,
+        "incremental": true /* Enable incremental compilation for faster builds. */,
 
-    /* Language and Environment */
-    "target": "ES2022",                     /* Set the JavaScript language version for emitted code (Node.js LTS supports this). */
-    "module": "NodeNext",                     /* Use modern ES modules. Change to "CommonJS" if you prefer require/module.exports. */
-    "lib": ["ES2022"],                      /* Include necessary library files for the target environment (Node.js). Removed DOM/WebWorker as less relevant for backend. */
-    // "jsx": "react-jsx",                  /* Specify JSX code generation (Uncomment if using JSX with a view engine like React). */
-    "experimentalDecorators": true,         /* Enable experimental support for decorators (if using libraries like TypeORM or NestJS). */
-    "emitDecoratorMetadata": true,          /* Emit metadata for decorators (required by some libraries). */
-    "useDefineForClassFields": true,        /* Use standard class fields definition behavior. */
+        /* Language and Environment */
+        "target": "ES2022" /* Set the JavaScript language version for emitted code (Node.js LTS supports this). */,
+        "module": "NodeNext" /* Use modern ES modules. Change to "CommonJS" if you prefer require/module.exports. */,
+        "lib": ["ES2022"] /* Include necessary library files for the target environment (Node.js). Removed DOM/WebWorker as less relevant for backend. */,
+        // "jsx": "react-jsx",                  /* Specify JSX code generation (Uncomment if using JSX with a view engine like React). */
+        "experimentalDecorators": true /* Enable experimental support for decorators (if using libraries like TypeORM or NestJS). */,
+        "emitDecoratorMetadata": true /* Emit metadata for decorators (required by some libraries). */,
+        "useDefineForClassFields": true /* Use standard class fields definition behavior. */,
 
-    /* Modules */
-    "moduleResolution": "NodeNext",         /* Use Node.js's modern module resolution algorithm. */
-    "baseUrl": ".",                         /* Base directory for resolving non-absolute module names. */
-    // "paths": {},                         /* Define custom path mappings if needed (e.g., "@/*": ["src/*"]). */
-    "resolveJsonModule": true,              /* Allow importing .json files directly, useful for configs. */
-    "typeRoots": ["node_modules/@types"],   /* Specify folders for type definitions. */
-    "types": ["node"],                      /* Explicitly include Node.js types. Ensure '@types/node' and '@types/express' are installed. */
-    "allowUmdGlobalAccess": false,          /* Disallow accessing UMD globals from modules (safer for backend). */
+        /* Modules */
+        "moduleResolution": "NodeNext" /* Use Node.js's modern module resolution algorithm. */,
+        "baseUrl": "." /* Base directory for resolving non-absolute module names. */,
+        // "paths": {},                         /* Define custom path mappings if needed (e.g., "@/*": ["src/*"]). */
+        "resolveJsonModule": true /* Allow importing .json files directly, useful for configs. */,
+        "typeRoots": ["node_modules/@types"] /* Specify folders for type definitions. */,
+        "types": ["node"] /* Explicitly include Node.js types. Ensure '@types/node' and '@types/express' are installed. */,
+        "allowUmdGlobalAccess": false /* Disallow accessing UMD globals from modules (safer for backend). */,
 
-    /* Emit */
-    "outDir": "dist",                       /* Output directory for compiled JavaScript files. */
-    "sourceMap": true,                      /* Generate source maps (.map files) for debugging. */
-    "removeComments": true,                 /* Remove comments from the compiled output. */
-    "noEmit": false,                        /* Ensure JavaScript files are emitted. */
-    "importHelpers": true,                  /* Import helper functions (e.g., __extends) from 'tslib'. */
-    "emitBOM": false,                       /* Do not emit a UTF-8 Byte Order Mark. */
+        /* Emit */
+        "outDir": "dist" /* Output directory for compiled JavaScript files. */,
+        "sourceMap": true /* Generate source maps (.map files) for debugging. */,
+        "removeComments": true /* Remove comments from the compiled output. */,
+        "noEmit": false /* Ensure JavaScript files are emitted. */,
+        "importHelpers": true /* Import helper functions (e.g., __extends) from 'tslib'. */,
+        "emitBOM": false /* Do not emit a UTF-8 Byte Order Mark. */,
 
-    /* Interop Constraints */
-    "isolatedModules": true,                /* Ensure each file can be safely transpiled without relying on other imports. */
-    "allowSyntheticDefaultImports": true,   /* Allow default imports from modules with no default export. */
-    "esModuleInterop": true,                  /* Enable compatibility helpers for importing CommonJS modules (CRITICAL for Express ecosystem). */
-    "forceConsistentCasingInFileNames": true, /* Ensure file references use consistent casing. */
+        /* Interop Constraints */
+        "isolatedModules": true /* Ensure each file can be safely transpiled without relying on other imports. */,
+        "allowSyntheticDefaultImports": true /* Allow default imports from modules with no default export. */,
+        "esModuleInterop": true /* Enable compatibility helpers for importing CommonJS modules (CRITICAL for Express ecosystem). */,
+        "forceConsistentCasingInFileNames": true /* Ensure file references use consistent casing. */,
 
-    /* Type Checking */
-    "strict": true,                         /* Enable all strict type-checking options. */
-    "noImplicitAny": true,                  /* Require explicit 'any' type. */
-    "strictNullChecks": true,               /* Enable strict null checks. */
-    "strictFunctionTypes": true,            /* Enable strict checking of function types. */
-    "strictBindCallApply": true,            /* Enable strict 'bind', 'call', and 'apply' methods on functions. */
-    "noImplicitThis": true,                 /* Disallow 'this' with an implied 'any' type. */
-    "useUnknownInCatchVariables": true,     /* Use 'unknown' instead of 'any' for catch clause variables. */
-    "alwaysStrict": true,                   /* Ensure 'use strict' is emitted in generated JavaScript. */
-    "noUnusedLocals": true,                 /* Report errors on unused local variables. */
-    "noUnusedParameters": true,             /* Report errors on unused function parameters. */
-    "noImplicitReturns": true,              /* Ensure all code paths in functions return a value. */
-    "noFallthroughCasesInSwitch": true,     /* Report errors for fallthrough cases in switch statements. */
-    "noUncheckedIndexedAccess": true,       /* Add 'undefined' to types accessed via index signatures. */
+        /* Type Checking */
+        "strict": true /* Enable all strict type-checking options. */,
+        "noImplicitAny": true /* Require explicit 'any' type. */,
+        "strictNullChecks": true /* Enable strict null checks. */,
+        "strictFunctionTypes": true /* Enable strict checking of function types. */,
+        "strictBindCallApply": true /* Enable strict 'bind', 'call', and 'apply' methods on functions. */,
+        "noImplicitThis": true /* Disallow 'this' with an implied 'any' type. */,
+        "useUnknownInCatchVariables": true /* Use 'unknown' instead of 'any' for catch clause variables. */,
+        "alwaysStrict": true /* Ensure 'use strict' is emitted in generated JavaScript. */,
+        "noUnusedLocals": true /* Report errors on unused local variables. */,
+        "noUnusedParameters": true /* Report errors on unused function parameters. */,
+        "noImplicitReturns": true /* Ensure all code paths in functions return a value. */,
+        "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statements. */,
+        "noUncheckedIndexedAccess": true /* Add 'undefined' to types accessed via index signatures. */,
 
-    /* Completeness */
-    "skipLibCheck": true,                   /* Skip type checking of all declaration files (*.d.ts). Speeds up compilation. */
-    "tsBuildInfoFile": "./.tsbuildinfo"     /* Specify the location for the incremental compilation information file. */
-  },
-  "include": [
-    "src/**/*"  // Include all files within the src directory
-  ],
-  "exclude": [
-    "node_modules", // Exclude the node_modules directory
-    "dist"          // Exclude the output directory
-    // Add any other directories or files to exclude, like test files if needed: "src/**/*.test.ts"
-  ]
+        /* Completeness */
+        "skipLibCheck": true /* Skip type checking of all declaration files (*.d.ts). Speeds up compilation. */,
+        "tsBuildInfoFile": "./.tsbuildinfo" /* Specify the location for the incremental compilation information file. */
+    },
+    "include": [
+        "src/**/*" // Include all files within the src directory
+    ],
+    "exclude": [
+        "node_modules", // Exclude the node_modules directory
+        "dist" // Exclude the output directory
+        // Add any other directories or files to exclude, like test files if needed: "src/**/*.test.ts"
+    ]
 }

@@ -1,8 +1,6 @@
 import express from 'express';
 import cors from 'cors';
 import AuthRonter from './routes/auth.route.js';
-import channelRouter from './routes/channel.route.js';
-import MessageRouter from './routes/messages.route.js';
 import cookieParser from 'cookie-parser';
 const app = express();
 // Configure CORS options
@@ -21,13 +19,11 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-app.get('/', (req, res) => {
+app.get('/', (_, res) => {
     res.send('Hello World!');
 });
 
 app.use('/auth', AuthRonter);
-app.use('/message', MessageRouter);
-app.use('/channel', channelRouter);
 
 export default app;
 app.use(cors());

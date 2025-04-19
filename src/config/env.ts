@@ -9,6 +9,7 @@ const envSchema = z.object({
     DATABASE_URL: z.string().default(''),
     JWT_SECRET: z.string().default(''),
     JWT_EXPIRES_IN: z.string().default('1d'),
+    CLIENT_URL: z.string().default('http://localhost:3001'),
 });
 
 const Config = envSchema.parse(process.env);
