@@ -20,7 +20,7 @@ const protect = async (req: Request, res: Response, next: NextFunction): Promise
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         token = req.headers.authorization.split(' ')[1];
     }
-
+    if(!token) token = req.cookies.token;
     // Make sure token exists
     if (!token) {
         res.status(401).json({ success: false, message: 'Not authorized to access this route' });

@@ -1,6 +1,6 @@
 import { Server, Socket } from 'socket.io';
 import prisma from '../../repositories/client.js';
-import { getOnlineUsersArray, Users } from '../../routes/socket.route.js';
+import { getGroupsArray, getOnlineUsersArray, Users, groups } from '../../routes/socket.route.js';
 import { ChatMessageDTO } from '../../types/types.js';
 
 export default function registerUserHandlers(io: Server, socket: Socket, userId: string) {
@@ -12,13 +12,32 @@ export default function registerUserHandlers(io: Server, socket: Socket, userId:
             data: { name: client.name },
         });
 
+        const oldname = Users.get(userId)?.name || '';
+        groups.forEach((group) => {
+            if (group.members.includes(oldname)) {
+                group.members = group.members.filter((member) => member !== oldname);
+                group.memberIds = group.memberIds.filter((id) => id !== userId);
+                if (group.lastMessageSender === oldname) {
+                    group.lastMessageSender = client.name;
+                }
+            }
+            group.members.push(client.name);
+            group.memberIds.push(client.id);
+        });
+
         Users.set(userId, {
             id: userId,
             name: client.name,
             socketId: socket.id,
             online: true,
         });
+
         io.emit('clients', getOnlineUsersArray());
+        io.emit('groups', getGroupsArray());
+        io.emit('clientUpdated', {
+            id: client.id,
+            name: client.name,
+        });
     });
 
     // fetchRecentMessages
@@ -76,7 +95,7 @@ export default function registerUserHandlers(io: Server, socket: Socket, userId:
                     toId: lastMessage.recipientUser.id,
                     isPrivate: true,
                     timestamp: lastMessage.timestamp.getTime(),
-                    reactions: {}
+                    reactions: {},
                 };
             }
         });

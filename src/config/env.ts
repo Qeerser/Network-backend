@@ -10,6 +10,11 @@ const envSchema = z.object({
     JWT_SECRET: z.string().default(''),
     JWT_EXPIRES_IN: z.string().default('1d'),
     CLIENT_URL: z.string().default('http://localhost:3001'),
+    SUPABASE_URL: z.string().default(''),
+    SUPABASE_REGION: z.string().default(''),
+    SUPABASE_ACCESS_KEY: z.string().default(''),
+    SUPABASE_SECRET_KEY: z.string().default(''),
 });
+
 const Config = envSchema.parse(process.env);
 export default Config;

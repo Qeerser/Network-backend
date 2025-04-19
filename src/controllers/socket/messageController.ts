@@ -88,7 +88,7 @@ export default function registerMessageHandlers(io: Server, socket: Socket, user
                     toId: type === 'private' ? message.recipientUserId || '' : message.recipientGroupId || '',
                     isPrivate: type === 'private',
                     timestamp: message.timestamp.getTime(),
-                    image: '',
+                    image: message.imageUrl || undefined,
                     edited: message.edited,
                     reactions,
                 };
@@ -120,6 +120,7 @@ export default function registerMessageHandlers(io: Server, socket: Socket, user
                 senderId: msg.fromId,
                 recipientGroupId: msg.toId,
                 timestamp: new Date(msg.timestamp),
+                imageUrl: msg.image,
             },
         });
 
@@ -156,6 +157,7 @@ export default function registerMessageHandlers(io: Server, socket: Socket, user
                 senderId: msg.fromId,
                 recipientUserId: msg.toId,
                 timestamp: new Date(msg.timestamp),
+                imageUrl: msg.image,
             },
         });
 

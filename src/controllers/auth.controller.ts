@@ -3,6 +3,8 @@ import prisma from '../repositories/client.js';
 import { hashPassword, getSignedJwtToken, matchPassword } from '../repositories/User.js';
 import Config from '../config/env.js';
 import ms from 'ms';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import path from 'path';
 
 const login = async (req: Request, res: Response): Promise<void> => {
     const { email, password } = req.body;
@@ -103,4 +105,62 @@ const getMe = async (req: Request, res: Response) => {
     });
 };
 
-export { register, login, getMe };
+// Supabase S3 Configuration
+const supabaseRegion = Config.SUPABASE_REGION;
+const supabaseAccessKeyId = Config.SUPABASE_ACCESS_KEY;
+const supabaseSecretAccessKey = Config.SUPABASE_SECRET_KEY;
+const supabaseEndpoint = Config.SUPABASE_URL;
+
+const s3Client = new S3Client({
+    forcePathStyle: true,
+    region: supabaseRegion,
+    endpoint: supabaseEndpoint + "/s3",
+    credentials: {
+        accessKeyId: supabaseAccessKeyId,
+        secretAccessKey: supabaseSecretAccessKey,
+    },
+});
+
+interface ImageUploadRequest extends Request {
+    file?: Express.Multer.File;
+}
+
+// API endpoint for receiving the image and uploading to S3
+const uploadImage = async (req: ImageUploadRequest, res: Response): Promise<void> => {
+    if (!req.file) {
+        res.status(400).json({ error: 'No image file uploaded.' });
+        return;
+    }
+
+    const file = req.file;
+    const fileName = `image-${Date.now()}${path.extname(file.originalname)}`;
+    const s3Key = fileName; // The key under which the file will be stored in S3
+
+    const uploadParams = {
+        Bucket: "image",
+        Key: s3Key,
+        Body: file.buffer,
+        ContentType: file.mimetype,
+    };
+
+    try {
+        const command = new PutObjectCommand(uploadParams);
+        const result = await s3Client.send(command);
+        console.log('S3 upload result:', result);
+
+        // Construct the public URL of the uploaded image (if your bucket is configured for public access)
+        const imageUrl = `${supabaseEndpoint}/object/public/image/${s3Key}`;
+
+        res.status(200).json({
+            message: 'Image uploaded successfully to S3!',
+            s3Key: s3Key,
+            url: imageUrl,
+            etag: result.ETag, // You might want to return the ETag
+        });
+    } catch (error) {
+        console.error('Error uploading to S3:', error);
+        res.status(500).json({ error: 'Failed to upload image to S3.' });
+    }
+};
+
+export { register, login, getMe, uploadImage };
