@@ -6,7 +6,7 @@ import prisma from 'src/repositories/client.js';
 // Extend Express Request interface
 declare module 'express' {
     interface Request {
-        user?: { name: string; id: string };
+        user: { name: string; id: string };
     }
 }
 
@@ -37,9 +37,7 @@ const protect = async (req: Request, res: Response, next: NextFunction): Promise
                 name: true,
             },
         });
-        if (user){
-            req.user = user;
-        }
+        req.user = user || { name: '', id: '' };
         
         next();
     } catch (err) {
