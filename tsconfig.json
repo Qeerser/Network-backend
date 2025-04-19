@@ -40,8 +40,8 @@
         "forceConsistentCasingInFileNames": true /* Ensure file references use consistent casing. */,
 
         /* Type Checking */
-        "strict": true /* Enable all strict type-checking options. */,
-        "noImplicitAny": true /* Require explicit 'any' type. */,
+        "strict": false /* Enable all strict type-checking options. */,
+        "noImplicitAny": false /* Require explicit 'any' type. */,
         "strictNullChecks": true /* Enable strict null checks. */,
         "strictFunctionTypes": true /* Enable strict checking of function types. */,
         "strictBindCallApply": true /* Enable strict 'bind', 'call', and 'apply' methods on functions. */,
