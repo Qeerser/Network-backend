@@ -1,7 +1,7 @@
 import { Server, Socket } from 'socket.io';
-import prisma from 'src/repositories/client.js';
-import { getOnlineUsersArray, Users } from 'src/routes/socket.route.js';
-import { ChatMessageDTO } from 'src/types/types.js';
+import prisma from '../../repositories/client.js';
+import { getOnlineUsersArray, Users } from '../../routes/socket.route.js';
+import { ChatMessageDTO } from '../../types/types.js';
 
 export default function registerUserHandlers(io: Server, socket: Socket, userId: string) {
     // updateClient

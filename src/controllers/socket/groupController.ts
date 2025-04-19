@@ -1,7 +1,7 @@
 import { Server, Socket } from 'socket.io';
-import prisma from 'src/repositories/client.js';
-import { getGroupsArray, groups } from 'src/routes/socket.route.js';
-import { ChatGroup } from 'src/types/types.js';
+import prisma from '../../repositories/client.js';
+import { getGroupsArray, groups } from '../../routes/socket.route.js';
+import { ChatGroup } from '../../types/types.js';
 export default function registerGroupHandlers(io: Server, socket: Socket, userId: string) {
     // createGroup
     socket.on('createGroup', async (newGroup: ChatGroup) => {

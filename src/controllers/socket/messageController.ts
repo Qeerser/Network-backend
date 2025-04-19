@@ -1,7 +1,7 @@
 import { Server, Socket } from 'socket.io';
-import prisma from 'src/repositories/client.js';
-import { groups, Users } from 'src/routes/socket.route.js';
-import { ChatMessageDTO } from 'src/types/types.js';
+import prisma from '../../repositories/client.js';
+import { groups, Users } from '../../routes/socket.route.js';
+import { ChatMessageDTO } from '../../types/types.js';
 export default function registerMessageHandlers(io: Server, socket: Socket, userId: string) {
     // fetchMessages
     socket.on('fetchMessages', async ({ target, type, limit, before }: { target: string; type: string; limit: string; before?: number }) => {

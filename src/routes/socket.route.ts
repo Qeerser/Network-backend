@@ -4,9 +4,9 @@ import registerMessageHandlers from '../controllers/socket/messageController.js'
 import registerUserHandlers from '../controllers/socket/userController.js';
 
 import jwt from 'jsonwebtoken';
-import Config from 'src/config/env.js';
-import prisma from 'src/repositories/client.js';
-import { ChatGroup, UserType } from 'src/types/types.js';
+import Config from '../config/env.js';
+import prisma from '../repositories/client.js';
+import { ChatGroup, UserType } from '../types/types.js';
 
 interface AuthPayload {
     auth: { token: string };

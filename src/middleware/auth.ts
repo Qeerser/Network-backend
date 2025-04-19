@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-import Config from 'src/config/env.js';
-import prisma from 'src/repositories/client.js';
+import Config from '../config/env.js';
+import prisma from '../repositories/client.js';
 import 'express';
 // Extend Express Request interface
 declare module 'express' {

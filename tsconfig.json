@@ -1,5 +1,11 @@
 {
     "compilerOptions": {
+        "paths": {
+            "src/*": ["./*"]
+        },
+        "baseUrl": "./src",
+      // Or potentially: "src/*": ["./"] depending on your structure
+    
         /* Visit https://aka.ms/tsconfig to read more about this file */
 
         /* Projects */
@@ -18,7 +24,7 @@
 
         /* Modules */
         "moduleResolution": "NodeNext" /* Use Node.js's modern module resolution algorithm. */,
-        "baseUrl": "." /* Base directory for resolving non-absolute module names. */,
+        // "baseUrl": "." /* Base directory for resolving non-absolute module names. */,
         // "paths": {},                         /* Define custom path mappings if needed (e.g., "@/*": ["src/*"]). */
         "resolveJsonModule": true /* Allow importing .json files directly, useful for configs. */,
         "typeRoots": ["node_modules/@types"] /* Specify folders for type definitions. */,
@@ -65,5 +71,6 @@
         "node_modules", // Exclude the node_modules directory
         "dist" // Exclude the output directory
         // Add any other directories or files to exclude, like test files if needed: "src/**/*.test.ts"
-    ]
+    ],
+    
 }

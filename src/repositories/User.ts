@@ -1,7 +1,7 @@
 // Encrypt password using bcrypt
 import bcrypt from 'bcryptjs';
 import jwt, { Secret } from 'jsonwebtoken';
-import Config from 'src/config/env.js';
+import Config from '../config/env.js';
 import ms from 'ms';
 
 const hashPassword = async function (password: string): Promise<string> {

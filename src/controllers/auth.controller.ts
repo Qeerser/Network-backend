@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import prisma from '../repositories/client.js';
 import { hashPassword, getSignedJwtToken, matchPassword } from '../repositories/User.js';
-import Config from 'src/config/env.js';
+import Config from '../config/env.js';
 import ms from 'ms';
 
 const login = async (req: Request, res: Response): Promise<void> => {
