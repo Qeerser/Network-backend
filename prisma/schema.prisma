@@ -3,8 +3,9 @@
 
 // Define the database connection
 datasource db {
-  provider = "postgresql" // Example: Use PostgreSQL. Change as needed (mysql, sqlite, etc.)
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // Define the Prisma Client generator

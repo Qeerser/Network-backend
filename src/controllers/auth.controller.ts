@@ -90,7 +90,7 @@ const sendTokenResponse = async (id: string, statusCode: number, res: Response) 
 
 const getMe = async (req: Request, res: Response) => {
     const user = await prisma.user.findUnique({
-        where: { id: req.user.id },
+        where: { id: req.user?.id },
         select: {
             id: true,
             name: true,

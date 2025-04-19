@@ -2,12 +2,15 @@ import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import Config from 'src/config/env.js';
 import prisma from 'src/repositories/client.js';
-
+import 'express';
 // Extend Express Request interface
 declare module 'express' {
-    interface Request {
-        user: { name: string; id: string };
-    }
+  interface Request {
+    user?: {
+      id: string;
+      name: string;
+    };
+  }
 }
 
 // Protect routes
