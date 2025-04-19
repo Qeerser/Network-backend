@@ -4,7 +4,6 @@ import Config from './config/env.js';
 import http from 'http';
 import { Server } from 'socket.io';
 import registerSocket from './routes/socket.route.js';
-import os from 'os';
 config();
 
 const PORT = Config.PORT;

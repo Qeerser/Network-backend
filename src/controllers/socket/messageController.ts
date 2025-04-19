@@ -197,8 +197,10 @@ export default function registerMessageHandlers(io: Server, socket: Socket, user
                 },
             },
         });
-
-        io.to(Users.get(msg.toId!)?.socketId!).emit('messageReceived', msg);
+        const recipientSocketId = Users.get(msg.toId)?.socketId;
+        if (recipientSocketId) {
+            io.to(recipientSocketId).emit('messageReceived', msg);
+        }
     });
 
     // editMessage

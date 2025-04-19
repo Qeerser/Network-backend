@@ -4,11 +4,9 @@ import Config from 'src/config/env.js';
 import prisma from 'src/repositories/client.js';
 
 // Extend Express Request interface
-declare global {
-    namespace Express {
-        interface Request {
-            user?: any;
-        }
+declare module 'express' {
+    interface Request {
+        user?: { name: string; id: string };
     }
 }
 
@@ -32,12 +30,20 @@ const protect = async (req: Request, res: Response, next: NextFunction): Promise
 
         console.log(decoded);
 
-        req.user = await prisma.user.findUnique({
+        const user = await prisma.user.findUnique({
             where: { id: decoded.id },
+            select: {
+                id: true,
+                name: true,
+            },
         });
-
+        if (user){
+            req.user = user;
+        }
+        
         next();
     } catch (err) {
+        console.log(err)
         res.status(401).json({
             success: false,
             message: 'Not authorized to access this route',

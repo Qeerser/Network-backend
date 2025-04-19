@@ -1,6 +1,7 @@
 import { Server, Socket } from 'socket.io';
 import prisma from 'src/repositories/client.js';
 import { getOnlineUsersArray, Users } from 'src/routes/socket.route.js';
+import { ChatMessageDTO } from 'src/types/types.js';
 
 export default function registerUserHandlers(io: Server, socket: Socket, userId: string) {
     // updateClient
@@ -60,7 +61,7 @@ export default function registerUserHandlers(io: Server, socket: Socket, userId:
                 },
             },
         });
-        const chats: Record<string, any> = {};
+        const chats: Record<string, ChatMessageDTO> = {};
 
         recentMessages.forEach((chat) => {
             const lastMessage = chat.lastMessage;
@@ -75,6 +76,7 @@ export default function registerUserHandlers(io: Server, socket: Socket, userId:
                     toId: lastMessage.recipientUser.id,
                     isPrivate: true,
                     timestamp: lastMessage.timestamp.getTime(),
+                    reactions: {}
                 };
             }
         });
