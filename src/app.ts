@@ -2,12 +2,13 @@ import express from 'express';
 import cors from 'cors';
 import AuthRonter from './routes/auth.route.js';
 import cookieParser from 'cookie-parser';
+import Config from './config/env.js';
 const app = express();
 // Configure CORS options
 
 app.use(
     cors({
-        origin: 'http://localhost:3001', // Replace with your frontend URL
+        origin: Config.CLIENT_URL, // Replace with your frontend URL
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
         credentials: true,
         allowedHeaders: ['Content-Type', 'Authorization'],

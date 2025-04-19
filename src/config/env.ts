@@ -11,7 +11,5 @@ const envSchema = z.object({
     JWT_EXPIRES_IN: z.string().default('1d'),
     CLIENT_URL: z.string().default('http://localhost:3001'),
 });
-
 const Config = envSchema.parse(process.env);
-
 export default Config;
