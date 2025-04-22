@@ -125,43 +125,41 @@ export default function registerSocket(io: Server) {
                 where: { id: decoded.id },
                 select: { id: true, name: true },
             });
+
+            const userJoinedGroups = await prisma.group.findMany({
+                where: {
+                    members: {
+                        some: {
+                            id: decoded.id,
+                        },
+                    },
+                },
+                select: {
+                    id: true,
+                    lastMessage: {
+                        select: {
+                            id: true,
+                            content: true,
+                            sender: {
+                                select: {
+                                    id: true,
+                                    name: true,
+                                },
+                            },
+                            timestamp: true,
+                        },
+                    },
+                },
+            });
+    
+            // Join all groups the user is a member of
+            socket.join(userJoinedGroups.map((group) => group.id));
+    
+            next();
         } catch (err) {
             console.log('Invalid token:', err);
             return next(new Error('Invalid token.'));
         }
-
-
-        // Fetch initial groups for the user
-        const userJoinedGroups = await prisma.group.findMany({
-            where: {
-                members: {
-                    some: {
-                        id: data.id,
-                    },
-                },
-            },
-            select: {
-                id: true,
-                lastMessage: {
-                    select: {
-                        id: true,
-                        content: true,
-                        sender: {
-                            select: {
-                                id: true,
-                                name: true,
-                            },
-                        },
-                        timestamp: true,
-                    },
-                },
-            },
-        });
-
-        // Join all groups the user is a member of
-        socket.join(userJoinedGroups.map((group) => group.id));
-
-        next();
     });
 
     io.on('connection', (socket: Socket) => {
