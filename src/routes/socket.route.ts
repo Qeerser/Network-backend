@@ -118,17 +118,18 @@ export default function registerSocket(io: Server) {
             return next(new Error('Authentication token missing.'));
         }
 
-        // TODO: Verify token and attach user info to socket
-        const data = jwt.verify(token, Config.JWT_SECRET) as { id: string };
-
-        if (!data) {
+        // TODO: Verify token and attach user info to Socket
+        try {
+            const decoded = jwt.verify(token, Config.JWT_SECRET) as { id: string };
+            socket.data.user = await prisma.user.findUnique({
+                where: { id: decoded.id },
+                select: { id: true, name: true },
+            });
+        } catch (err) {
+            console.log('Invalid token:', err);
             return next(new Error('Invalid token.'));
         }
 
-        socket.data.user = await prisma.user.findUnique({
-            where: { id: data.id as string },
-            select: { id: true, name: true },
-        });
 
         // Fetch initial groups for the user
         const userJoinedGroups = await prisma.group.findMany({
