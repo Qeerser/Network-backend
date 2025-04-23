@@ -136,25 +136,13 @@ export default function registerSocket(io: Server) {
                 },
                 select: {
                     id: true,
-                    lastMessage: {
-                        select: {
-                            id: true,
-                            content: true,
-                            sender: {
-                                select: {
-                                    id: true,
-                                    name: true,
-                                },
-                            },
-                            timestamp: true,
-                        },
-                    },
-                },
+                }
             });
     
             // Join all groups the user is a member of
             socket.join(userJoinedGroups.map((group) => group.id));
-    
+            console.log(groups)
+            console.log(`User ${socket.data.user.name} joined groups: ${userJoinedGroups.map((group) => group.id).join(', ')}`);
             next();
         } catch (err) {
             console.log('Invalid token:', err);

@@ -7,10 +7,6 @@ export default function registerUserHandlers(io: Server, socket: Socket, userId:
     // updateClient
     socket.on('updateClient', async (client: { name: string; id: string }) => {
         // TODO: Update user's name in the system/database
-        await prisma.user.update({
-            where: { id: client.id },
-            data: { name: client.name },
-        });
 
         const oldname = Users.get(userId)?.name || '';
         groups.forEach((group) => {
@@ -20,9 +16,15 @@ export default function registerUserHandlers(io: Server, socket: Socket, userId:
                 if (group.lastMessageSender === oldname) {
                     group.lastMessageSender = client.name;
                 }
+                group.members.push(client.name);
+                group.memberIds.push(client.id);
             }
-            group.members.push(client.name);
-            group.memberIds.push(client.id);
+            
+        });
+
+        await prisma.user.update({
+            where: { id: client.id },
+            data: { name: client.name },
         });
 
         Users.set(userId, {
