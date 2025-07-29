@@ -11,6 +11,7 @@ datasource db {
 // Define the Prisma Client generator
 generator client {
   provider = "prisma-client-js"
+  output   = "client"
 }
 
 // --- Models ---

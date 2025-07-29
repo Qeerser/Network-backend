@@ -9,7 +9,7 @@ const envSchema = z.object({
     DATABASE_URL: z.string().default(''),
     JWT_SECRET: z.string().default(''),
     JWT_EXPIRES_IN: z.string().default('1d'),
-    CLIENT_URL: z.string().default('http://localhost:3001'),
+    CLIENT_URL: z.string().default(''),
     SUPABASE_URL: z.string().default(''),
     SUPABASE_REGION: z.string().default(''),
     SUPABASE_ACCESS_KEY: z.string().default(''),

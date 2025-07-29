@@ -2,6 +2,7 @@ import { Server, Socket } from 'socket.io';
 import registerGroupHandlers from '../controllers/socket/groupController.js';
 import registerMessageHandlers from '../controllers/socket/messageController.js';
 import registerUserHandlers from '../controllers/socket/userController.js';
+import logger from '../config/logger.js';
 
 import jwt from 'jsonwebtoken';
 import Config from '../config/env.js';
@@ -141,11 +142,13 @@ export default function registerSocket(io: Server) {
     
             // Join all groups the user is a member of
             socket.join(userJoinedGroups.map((group) => group.id));
-            console.log(groups)
-            console.log(`User ${socket.data.user.name} joined groups: ${userJoinedGroups.map((group) => group.id).join(', ')}`);
+            
+            logger.debug(`User ${socket.data.user.name} joined groups: ${userJoinedGroups.map((group) => group.id).join(', ')}`);
+            logger.info(`Socket authentication successful for user: ${socket.data.user.name} (${socket.data.user.id})`);
+            
             next();
         } catch (err) {
-            console.log('Invalid token:', err);
+            logger.error('Socket authentication failed:', err);
             return next(new Error('Invalid token.'));
         }
     });
@@ -153,13 +156,15 @@ export default function registerSocket(io: Server) {
     io.on('connection', (socket: Socket) => {
         const username = socket.data.user?.name || 'Anonymous';
         const userId = socket.data.user?.id || 'UnknownUserId';
+        
+        logger.info(`Socket connection established: User ${username} (${userId}) connected with socket ID: ${socket.id}`);
+        
         Users.set(userId, {
             id: userId,
             name: username,
             socketId: socket.id,
             online: true,
         });
-        console.log(`connected: \x1b[32m${username}`);
 
         // Emit updated client list
         io.emit('clients', getOnlineUsersArray());
@@ -168,9 +173,8 @@ export default function registerSocket(io: Server) {
 
         // Handle disconnect
         socket.on('disconnect', (reason) => {
-            console.log(`${username} disconnected: ${reason}`);
-            // TODO: Update user status, notify others, etc.
-
+            logger.info(`Socket disconnection: User ${username} (${userId}) disconnected. Reason: ${reason}`);
+            
             Users.set(userId, {
                 id: userId,
                 name: username,
